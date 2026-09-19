@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rajvanshi Loyalty Card</title>
+  <style>
+    /* CSS STYLING */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background-color: #e0e0e0;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .tab-btn.active {
+      background-color: #d9381e;
+      color: white;
+    }
+
+    .card-container {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #d9381e;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button.btn-main {
+      width: 100%;
+      padding: 12px;
+      background-color: #d9381e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button.btn-main:hover {
+      background-color: #b82e17;
+    }
+
+    .stamps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px dashed #bbb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      font-size: 1.2rem;
+      color: #aaa;
+      font-weight: bold;
+      background-color: #f9f9f9;
+      transition: all 0.3s ease;
+    }
+
+    .circle.stamped {
+      border: 2px solid #28a745;
+      background-color: #e8f5e9;
+      color: #28a745;
+      font-size: 1.8rem;
+    }
+
+    .reward-box {
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+      color: #5d4037;
+    }
+
+    .review-section {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .review-btn {
+      display: inline-block;
+      margin-top: 8px;
+      color: #1a73e8;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .secondary-btn {
+      background-color: #6c757d;
+      margin-top: 15px;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 12px;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .add-btn {
+      background-color: #28a745;
+    }
+
+    .reset-btn {
+      background-color: #dc3545;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Tabs to Switch Views -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" id="tab-cust" onclick="switchView('customer')">Customer View</button>
+    <button class="tab-btn" id="tab-admin" onclick="switchView('admin')">Admin View</button>
+  </div>
+
+  <!-- CUSTOMER SECTION -->
+  <div id="customer-section" class="card-container">
+    <h2>RAJVANSHI LOYALTY CARD</h2>
+    <p class="subtitle">Buy Fried Rice & Earn Rewards!</p>
+
+    <div id="customer-login">
+      <input type="text" id="cust-id-input" placeholder="Enter Customer Mobile/ID">
+      <button class="btn-main" onclick="loadCustomerCard()">View My Card</button>
+    </div>
+
+    <div id="card-display" class="hidden">
+      <div class="info-bar">
+        <span>Customer ID: <strong id="display-cust-id">--</strong></span>
+      </div>
+
+      <div class="stamps-grid">
+        <div class="circle" id="stamp-1">1</div>
+        <div class="circle" id="stamp-2">2</div>
+        <div class="circle" id="stamp-3">3</div>
+        <div class="circle" id="stamp-4">4</div>
+        <div class="circle" id="stamp-5">5</div>
+        <div class="circle" id="stamp-6">6</div>
+      </div>
+
+      <div id="reward-status" class="reward-box">
+        Buy 1 Fried Rice = Get 1 Stamp 🎯<br>
+        Collect 6 stamps to get a <strong>FREE Burger 🍔</strong>!
+      </div>
+
+      <div class="review-section">
+        <p>Enjoyed our food? Leave us a review!</p>
+        <a href="https://g.page/r/your-google-review-link" target="_blank" class="review-btn">
+          Google Review Link ⭐
+        </a>
+      </div>
+
+      <button class="secondary-btn" onclick="logoutCustomer()">Switch Customer</button>
+    </div>
+  </div>
+
+  <!-- ADMIN SECTION -->
+  <div id="admin-section" class="card-container hidden">
+    <h2>Admin Panel</h2>
+    <p class="subtitle">Rajvanshi Loyalty Management</p>
+
+    <div id="admin-login">
+      <input type="password" id="admin-pin" placeholder="Enter PIN (Demo: 1234)">
+      <button class="btn-main" onclick="verifyPin()">Login</button>
+    </div>
+
+    <div id="admin-dashboard" class="hidden">
+      <div style="text-align: left; margin-bottom: 8px;">
+        <label for="admin-cust-id" style="font-size: 0.9rem; font-weight: bold;">Customer Mobile/ID:</label>
+      </div>
+      <input type="text" id="admin-cust-id" placeholder="Enter Customer ID">
+
+      <div>
+        <button onclick="addStamp()" class="action-btn add-btn">+ Add Fried Rice Stamp</button>
+        <button onclick="resetStamps()" class="action-btn reset-btn">Reset Card / Redeem Reward</button>
+      </div>
+
+      <div id="admin-msg" class="message"></div>
+      <button class="secondary-btn" onclick="adminLogout()">Logout Admin</button>
+    </div>
+  </div>
+
+  <script>
+    // JAVASCRIPT LOGIC
+    let currentCustId = '';
+    const DEMO_PIN = "1234";
+
+    // View Switcher Function
+    function switchView(view) {
+      const custSec = document.getElementById('customer-section');
+      const adminSec = document.getElementById('admin-section');
+      const tabCust = document.getElementById('tab-cust');
+      const tabAdmin = document.getElementById('tab-admin');
+
+      if (view === 'customer') {
+        custSec.classList.remove('hidden');
+        adminSec.classList.add('hidden');
+        tabCust.classList.add('active');
+        tabAdmin.classList.remove('active');
+      } else {
+        custSec.classList.add('hidden');
+        adminSec.classList.remove('hidden');
+        tabCust.classList.remove('active');
+        tabAdmin.classList.add('active');
+      }
+    }
+
+    // Customer Functions
+    function loadCustomerCard() {
+      const input = document.getElementById('cust-id-input');
+      currentCustId = input.value.trim();
+
+      if (!currentCustId) {
+        alert('Please enter a valid Customer Mobile/ID');
+        return;
+      }
+
+      document.getElementById('display-cust-id').innerText = currentCustId;
+      document.getElementById('customer-login').classList.add('hidden');
+      document.getElementById('card-display').classList.remove('hidden');
+
+      updateUI();
+    }
+
+    function updateUI() {
+      const stamps = parseInt(localStorage.getItem(`stamps_${currentCustId}`) || '0');
+
+      for (let i = 1; i <= 6; i++) {
+        const circle = document.getElementById(`stamp-${i}`);
+        if (i <= stamps) {
+          circle.classList.add('stamped');
+          circle.innerHTML = '✔';
+        } else {
+          circle.classList.remove('stamped');
+          circle.innerHTML = i;
+        }
+      }
+
+      const rewardBox = document.getElementById('reward-status');
+      if (stamps >= 6) {
+        rewardBox.style.backgroundColor = '#d4edda';
+        rewardBox.style.borderColor = '#c3e6cb';
+        rewardBox.innerHTML = '🎉 <strong>Congratulations!</strong> You have unlocked a FREE Burger 🍔! Show this to the cashier to redeem.';
+      } else {
+        rewardBox.style.backgroundColor = '#fff8e1';
+        rewardBox.style.borderColor = '#ffe082';
+        rewardBox.innerHTML = `Buy 1 Fried Rice = Get 1 Stamp 🎯<br>Collect ${6 - stamps} more stamp(s) for a <strong>FREE Burger 🍔</strong>!`;
+      }
+    }
+
+    function logoutCustomer() {
+      currentCustId = '';
+      document.getElementById('cust-id-input').value = '';
+      document.getElementById('card-display').classList.add('hidden');
+      document.getElementById('customer-login').classList.remove('hidden');
+    }
+
+    // Admin Functions
+    function verifyPin() {
+      const pinInput = document.getElementById('admin-pin').value;
+      if (pinInput === DEMO_PIN) {
+        document.getElementById('admin-login').classList.add('hidden');
+        document.getElementById('admin-dashboard').classList.remove('hidden');
+      } else {
+        alert('Incorrect PIN! (Demo PIN is 1234)');
+      }
+    }
+
+    function addStamp() {
+      const custId = document.getElementById('admin-cust-id').value.trim();
+      const msgBox = document.getElementById('admin-msg');
+
+      if (!custId) {
+        msgBox.style.color = 'red';
+        msgBox.innerText = 'Please enter a Customer ID';
+        return;
+      }
+
+      let stamps = parseInt(localStorage.getItem(`stamps_${custId}`) || '0');
+
+      if (stamps >= 6) {
+        msgBox.style.color = '#d9381e';
+        msgBox.innerText = 'Customer already has 6 stamps! Redeem reward first.';
+        return;
+      }
+
+      stamps += 1;
+      localStorage.setItem(`stamps_${custId}`, stamps.toString());
+
+      msgBox.style.color = 'green';
+      msgBox.innerText = `Added 1 stamp for ${custId}! Total stamps: ${stamps}/6`;
+    }
+
+    function resetStamps() {
+      const custId = document.getElementById('admin-cust-id').value.trim();
+      const msgBox = document.getElementById('admin-msg');
+
+      if (!custId) {
+        msgBox.style.color = 'red';
+        msgBox.innerText = 'Please enter a Customer ID';
+        return;
+      }
+
+      localStorage.setItem(`stamps_${custId}`, '0');
+      msgBox.style.color = 'blue';
+      msgBox.innerText = `Card reset for ${custId}. Stamps set to 0.`;
+    }
+
+    function adminLogout() {
+      document.getElementById('admin-pin').value = '';
+      document.getElementById('admin-cust-id').value = '';
+      document.getElementById('admin-msg').innerText = '';
+      document.getElementById('admin-dashboard').classList.add('hidden');
+      document.getElementById('admin-login').classList.remove('hidden');
+    }
+  </script>
+</body>
+  </html>
